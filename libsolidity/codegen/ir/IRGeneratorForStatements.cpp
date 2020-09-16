@@ -839,7 +839,10 @@ void IRGeneratorForStatements::endVisit(FunctionCall const& _functionCall)
 			solAssert(functionType->declaration() == *functionDef, "");
 
 			if (identifier)
+			{
+				solAssert(identifier->annotation().requiresVirtualLookup, "");
 				functionDef = &functionDef->resolveVirtual(m_context.mostDerivedContract());
+			}
 			else
 			{
 				ContractType const* type = dynamic_cast<ContractType const*>(memberAccess->expression().annotation().type);
@@ -2081,6 +2084,7 @@ void IRGeneratorForStatements::endVisit(Identifier const& _identifier)
 	}
 	else if (FunctionDefinition const* functionDef = dynamic_cast<FunctionDefinition const*>(declaration))
 	{
+		solAssert(_identifier.annotation().requiresVirtualLookup, "");
 		FunctionDefinition const& resolvedFunctionDef = functionDef->resolveVirtual(m_context.mostDerivedContract());
 		define(_identifier) << to_string(resolvedFunctionDef.id()) << "\n";
 

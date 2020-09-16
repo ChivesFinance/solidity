@@ -236,6 +236,8 @@ struct UserDefinedTypeNameAnnotation: TypeNameAnnotation
 {
 	/// Referenced declaration, set during reference resolution stage.
 	Declaration const* referencedDeclaration = nullptr;
+	/// Whether a virtual lookup needs to be performed to find the declaration.
+	bool requiresVirtualLookup = false;
 };
 
 struct ExpressionAnnotation: ASTAnnotation
@@ -263,6 +265,8 @@ struct IdentifierAnnotation: ExpressionAnnotation
 {
 	/// Referenced declaration, set at latest during overload resolution stage.
 	Declaration const* referencedDeclaration = nullptr;
+	/// Whether a virtual lookup needs to be performed to find the declaration.
+	bool requiresVirtualLookup = false;
 	/// List of possible declarations it could refer to (can contain duplicates).
 	std::vector<Declaration const*> candidateDeclarations;
 	/// List of possible declarations it could refer to.
@@ -273,6 +277,8 @@ struct MemberAccessAnnotation: ExpressionAnnotation
 {
 	/// Referenced declaration, set at latest during overload resolution stage.
 	Declaration const* referencedDeclaration = nullptr;
+	/// Whether a virtual lookup needs to be performed to find the declaration.
+	bool requiresVirtualLookup = false;
 };
 
 struct BinaryOperationAnnotation: ExpressionAnnotation
